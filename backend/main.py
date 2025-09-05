@@ -12,7 +12,7 @@ app.include_router(users.router)
 app.include_router(posts.router)
 app.include_router(categories.router)
 
-@app.get('/')
+@app.get('/') #@app.get('/') pour recuperer les informations sur le projet / on le a besoin quand on ouvre la page principale pour afficher le nom du projet
 def read_root():
     return {'projet':'Altrisia'}
 
