@@ -1,0 +1,5 @@
+pandas
+fastapi
+SQLAlchemy
+dotenv
+supabase
