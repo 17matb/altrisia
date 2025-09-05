@@ -1,6 +1,13 @@
 from fastapi import FastAPI
-from api import router
+from routers import users, posts, categories
 
 app = FastAPI()
 
-app.include_router(router)
+app.include_router(users.router)
+app.include_router(posts.router)
+app.include_router(categories.router)
+
+
+@app.get('/')
+def read_root():
+    return {'projet': 'Altrisia'}
