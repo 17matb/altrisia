@@ -1,3 +1,6 @@
 pandas
-fastapi
+fastapi[standard]
 SQLAlchemy
+dotenv
+supabase
+psycopg2-binary

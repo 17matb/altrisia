@@ -1,0 +1,5 @@
+backend/database/.env
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+backend/uv.lock
