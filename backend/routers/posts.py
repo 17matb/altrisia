@@ -5,22 +5,24 @@ router = APIRouter(
     tags=["posts"]
 )
 
-@router.get("/")
-def list_posts():
-    return {"posts": []}
+temp_posts = [{'post_id': 1, 'title': 'Aide au déménagement'}]
+
+@router.get('/')
+def read_posts():
+    return temp_posts
 
 @router.post("/")
-def create_ad(posts: dict):
+def create_post(posts: dict):
     return {"message": "Annonce créée", "posts": posts}
 
 @router.get("/{posts_id}")
-def get_ad(posts_id: int):
+def get_post(posts_id: int):
     return {"message": f"Annonce {posts_id}"}
 
-@router.put("/{posts_id}")# new endpoint 
-def update_ad(posts_id: int, posts: dict):
+@router.put("/{posts_id}") # new endpoint
+def update_post(posts_id: int, posts: dict):
     return {"message": f"Annonce {posts_id} mise à jour", "posts": posts}
 
 @router.delete("/{posts_id}")
-def delete_ad(posts_id: int):
+def delete_post(posts_id: int):
     return {"message": f"Annonce {posts_id} supprimée"}
