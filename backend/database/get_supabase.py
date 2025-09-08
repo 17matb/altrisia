@@ -1,6 +1,5 @@
 import psycopg2
 from sqlalchemy import create_engine, text
-from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
@@ -12,13 +11,11 @@ USER = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASS")
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
-DBNAME = os.getenv("DBNAME")
-print(HOST)
-print(USER)
+SUPABASE_DB = os.getenv("DBNAME")
 
 DATABASE_CONFIG = {
     'host': HOST,  
-    'database': DBNAME,
+    'database': SUPABASE_DB,
     'user': USER,
     'password': PASSWORD,
     'port': PORT
@@ -27,7 +24,7 @@ DATABASE_CONFIG = {
 # Création de l'engine SQLAlchemy
 engine = create_engine(
     f"postgresql://{USER}:{PASSWORD}@"
-    f"{HOST}:{PORT}/{DBNAME}"
+    f"{HOST}:{PORT}/{SUPABASE_DB}"
 )
 
 # Test de connexion
@@ -39,7 +36,7 @@ def test_connection():
             password=PASSWORD,
             host=HOST,
             port=PORT,
-            dbname=DBNAME
+            dbname=SUPABASE_DB
         )
         print("Connection successful!")
         
