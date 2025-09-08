@@ -8,7 +8,8 @@ USER = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASS")
 HOST = os.getenv("HOST")
 PORT = os.getenv("PORT")
-URL = f"postgresql://{USER}:[{PASSWORD}]@{HOST}:{PORT}/postgres"
+SUPABASE_DB = os.getenv("DBNAME")
+URL = f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{SUPABASE_DB}"
 
 engine = create_engine(URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

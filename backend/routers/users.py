@@ -1,44 +1,30 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from supabase_auth import Session
+from database import models
+import supabase
+from database.datasession import SessionLocal
+
 
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
 )
 
-temp_users = [
-    {
-        'user_id': 1,
-        'user_first_name': 'John',
-        'user_last_name': 'Doe',
-        'user_email': 'example@domain.com',
-        'user_password': 'qwertyuiop',
-        'user_creation_date': '2025-09-05',
-    },
-    {
-        'user_id': 2,
-        'user_first_name': 'John',
-        'user_last_name': 'Doe',
-        'user_email': 'example@domain.com',
-        'user_password': 'qwertyuiop',
-        'user_creation_date': '2025-09-05',
-    },
-    {
-        'user_id': 3,
-        'user_first_name': 'John',
-        'user_last_name': 'Doe',
-        'user_email': 'example@domain.com',
-        'user_password': 'qwertyuiop',
-        'user_creation_date': '2025-09-05',
-    },
-]
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @router.get('/')
-def read_users():
-    return temp_users
+def read_users(db: Session = Depends(get_db)):
+    return db.query(models.User).all()
 
 @router.post("/")
-def create_user(user: dict):
-    return {"message": "Utilisateur créé", "user": user}
+def create_user(user_id, nom, prenom, email, md5_hash, date_insc):
+    response = supabase.table("users").insert({"id": user_id, "Nom": nom, "Prenom": prenom, "Email": email, "Pass": md5_hash, "Date Insc": date_insc}).execute()
+    return {"message": "Utilisateur créé", "Response": response}
 
 @router.get("/{user_id}")
 def get_user(user_id: int):
