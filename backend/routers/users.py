@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from fastapi import APIRouter, Depends
 from supabase_auth import Session
 from database import models
@@ -41,24 +42,21 @@ def read_users(db: Session = Depends(get_db)):
 
 @router.post("/")
 def create_user(
-    user_id: int = Form(...),
     nom: str = Form(...),
     prenom: str = Form(...),
     email: str = Form(...),
     password: str = Form(...),
-    date_insc: str = Form(...),
     db: Session = Depends(get_db)
     ):
 
     hashed_password = hash_password(password)
 
     new_user = models.User(
-        user_id=user_id,
         nom=nom,
         prenom=prenom,
         email=email,
         mdp_hash=hashed_password,
-        date_insc=date_insc
+        date_insc=datetime.now(timezone.utc)
     )
     db.add(new_user)
     db.commit()
