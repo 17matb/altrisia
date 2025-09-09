@@ -11,4 +11,12 @@ dependencies = [
     "sqlalchemy>=2.0.43",
     "supabase>=2.18.1",
     "dotenv>=0.9.9",
+    "pydantic>=2.11.7",
 ]
+
+[tool.basedpyright]
+typeCheckingMode = "basic"
+reportUnknownVariableType = false
+reportUnknownMemberType = false
+reportUnknownParameterType = false
+useLibraryCodeForTypes = true
