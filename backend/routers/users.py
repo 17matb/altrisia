@@ -2,20 +2,12 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
 from supabase_auth import Session
 from database import models
-from fastapi import Form
-from supabase import Client, create_client
 from database.datasession import SessionLocal
+from database.schemas import UpdateUser, UserCreate, UserLogin
 from dotenv import load_dotenv
-import os
 from database.hash_pass import hash_password
-from validate_email import validate_email
 
 load_dotenv()
-
-URL = os.getenv("API_URL")
-KEY = os.getenv("API_KEY")
-
-supabase_client: Client = create_client(URL, KEY)
 
 router = APIRouter(
     prefix="/users",
@@ -33,32 +25,43 @@ def get_db():
 def read_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
+@router.put('/{user_id}')
+def update_user(id: str, user_update: UpdateUser, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if user_update.nom is not None:
+        user.nom = user_update.nom
+    if user_update.prenom is not None:
+        user.prenom = user_update.prenom
+    if user_update.email is not None:
+        user.email = user_update.email
+    if user_update.password is not None:
+        user.mdp_hash = hash_password(user_update.password)
+
+    db.commit()
+    db.refresh(user)
+
 @router.post("/")
 def create_user(
-    nom: str = Form(...),
-    prenom: str = Form(...),
-    email: str = Form(...),
-    password: str = Form(...),
+    user: UserCreate,
     db: Session = Depends(get_db)
     ):
 
-    hashed_password = hash_password(password)
-    is_valid_format = validate_email(email)
-
-    if not is_valid_format:
-        return {"Email format is not valid":  email}
-    else:
-        new_user = models.User(
-            nom=nom,
-            prenom=prenom,
-            email=email,
-            mdp_hash=hashed_password,
-            date_insc=datetime.now(timezone.utc)
-        )
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
-        return {"message": "Utilisateur créé", "Response": new_user}
+    user.password = hash_password(user.password)
+    
+    new_user = models.User(
+        nom=user.nom,
+        prenom=user.prenom,
+        email=user.email,
+        mdp_hash=user.password,
+        date_insc=datetime.now(timezone.utc)
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return {"message": "Utilisateur créé", "Response": new_user}
 
 @router.get("/{user_id}")
 def get_user(id: int, db: Session = Depends(get_db)):
@@ -69,12 +72,19 @@ def get_user(id: int, db: Session = Depends(get_db)):
     return user
 
 @router.post("/login")
-def login(user_email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.email == user_email).all()
-    hashed_password = hash_password(password)
-    user_password = db.query(models.User).filter(models.User.mdp_hash == hashed_password).all()
-    if not user_password:
+def login(login_user: UserLogin, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.email == login_user.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Email not found")
+    elif user.mdp_hash != hash_password(login_user.password):
         raise HTTPException(status_code=404, detail="Password not valid")
-    elif not user:
-        raise HTTPException(status_code=404, detail="Email not valid")
     return "Bienvenue"
+
+@router.delete("/{user_id}")
+def user_delete(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User non trouvé")
+    db.delete(user)
+    db.commit()
+    return {"message": "Compte supprimé"}
