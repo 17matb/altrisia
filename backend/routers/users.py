@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
-from supabase_auth import Session
+from sqlalchemy.orm import Session
 from database import models
 from database.datasession import SessionLocal
 from database.schemas import UpdateUser, UserCreate, UserLogin
