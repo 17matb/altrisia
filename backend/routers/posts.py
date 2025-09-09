@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from database.datasession import SessionLocal
@@ -45,24 +45,38 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     }
 
 
-# @router.get('/{post_id}')
-# def get_post(post_id: int, db: Session = Depends(get_db)):
-#     statement = select(models.Post).where(models.Post.post_id == post_id)
-#     selected_post = db.execute(statement)
-#     return {
-#         'titre': selected_post.titre,
-#         'description': selected_post.description,
-#         'user_id': selected_post.user_id,
-#         'category_id': selected_post.category_id,
-#         'media_url': selected_post.media_url,
-#     }
+@router.get('/{post_id}', response_model=schemas.PostRead)
+def get_post(post_id: int, db: Session = Depends(get_db)):
+    statement = select(models.Post).where(models.Post.post_id == post_id)
+    selected_post = db.execute(statement).scalar_one_or_none()
+    if not selected_post:
+        raise HTTPException(status_code=404, detail='Post not found')
+    return selected_post
 
 
-#
-# @router.put("/{posts_id}") # new endpoint
-# def update_post(posts_id: int, posts: dict):
-#     return {"message": f"Annonce {posts_id} mise à jour", "posts": posts}
-#
-# @router.delete("/{posts_id}")
-# def delete_post(posts_id: int):
-#     return {"message": f"Annonce {posts_id} supprimée"}
+@router.put('/{post_id}', response_model=schemas.PostRead)
+def update_post(
+    post_id: int, post_update: schemas.PostUpdate, db: Session = Depends(get_db)
+):
+    statement = select(models.Post).where(models.Post.post_id == post_id)
+    selected_post = db.execute(statement).scalar_one_or_none()
+    if not selected_post:
+        raise HTTPException(status_code=404, detail='Post not found')
+    update_data = post_update.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        setattr(selected_post, key, value)
+    db.add(selected_post)
+    db.commit()
+    db.refresh(selected_post)
+    return selected_post
+
+
+@router.delete('/{post_id}')
+def delete_post(post_id: int, db: Session = Depends(get_db)):
+    statement = select(models.Post).where(models.Post.post_id == post_id)
+    selected_post = db.execute(statement).scalar_one_or_none()
+    if not selected_post:
+        raise HTTPException(status_code=404, detail='Post not found')
+    db.delete(selected_post)
+    db.commit()
+    return {'message': f'Post {post_id} deleted'}
