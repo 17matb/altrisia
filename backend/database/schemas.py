@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 
@@ -20,3 +20,19 @@ class PostUpdate(BaseModel):
     description: str | None = None
     category_id: int | None = None
     media_url: str | None = None
+
+class UserCreate(BaseModel):
+    nom: str
+    prenom: str
+    email: EmailStr
+    password: str
+
+class UpdateUser(BaseModel):
+    nom: str | None = None
+    prenom: str | None = None
+    email: str | None = None
+    password: str | None = None
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str

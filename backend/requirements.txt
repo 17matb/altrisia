@@ -4,3 +4,4 @@ SQLAlchemy
 dotenv
 supabase
 psycopg2-binary
+validate-email-wt
