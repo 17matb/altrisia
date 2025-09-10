@@ -11,4 +11,5 @@ dependencies = [
     "sqlalchemy>=2.0.43",
     "supabase>=2.18.1",
     "dotenv>=0.9.9",
+    "validate-email-wt>=1.4.6",
 ]
