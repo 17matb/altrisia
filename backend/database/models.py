@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = "users"
     user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
@@ -15,17 +16,19 @@ class User(Base):
     mdp_hash = Column(String, nullable=False)
     date_insc = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
 
+
 class Post(Base):
-    __tablename__ = "posts"
-    post_id = Column(Integer, primary_key=True, index=True)
+    __tablename__ = 'posts'
+    post_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     titre = Column(String, nullable=False)
     description = Column(String)
     date_creation = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
-    user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
-    category_id = Column(Integer, ForeignKey("categories.category_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
+    category_id = Column(Integer, ForeignKey('categories.category_id'), nullable=False)
     media_url = Column(String)
 
+
 class Category(Base):
-    __tablename__ = "categories"
+    __tablename__ = 'categories'
     category_id = Column(Integer, primary_key=True, index=True)
     nom = Column(String, nullable=False)
