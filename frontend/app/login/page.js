@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "../components/ui/Button";
+import { User, Lock} from 'lucide-react';
+
 
 export default function ConnexionPage() {
   const [email, setEmail] = useState("");
@@ -34,10 +37,13 @@ export default function ConnexionPage() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      <button type="submit">Se connecter</button>
+    <form onSubmit={handleLogin} className="flex flex-col gap-4 max-w-sm mx-auto p-6 bg-white shadow-md rounded-lg">
+      <h2 className="text-xl font-semibold text-center">Connexion</h2>
+      <User />
+      <input type="email" value={email} placeholder="example@domain.com" onChange={(e) => setEmail(e.target.value)} required className="border border-foreground/10 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"/>
+      <Lock />
+      <input type="password" value={password} placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required className="border border-foreground/10 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"/>
+      <Button type="submit">Se connecter</Button>
       {message && <p>{message}</p>}
     </form>
   );

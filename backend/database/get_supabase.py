@@ -24,7 +24,7 @@ DATABASE_CONFIG = {
 # Création de l'engine SQLAlchemy
 engine = create_engine(
     f"postgresql://{USER}:{PASSWORD}@"
-    f"{HOST}:{PORT}/{SUPABASE_DB}"
+    f"{HOST}:{PORT}/{SUPABASE_DB}", pool_size=5, max_overflow=0
 )
 
 # Test de connexion
