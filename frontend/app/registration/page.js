@@ -29,7 +29,7 @@ export default function ConnexionPage() {
             setMessage(data.detail);
             return;
         }
-        setMessage("Compte créé ✅");
+        setMessage("Compte créé");
         localStorage.setItem("userId", data.user_id);
         router.push("/profile");
         } catch (err) {

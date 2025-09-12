@@ -26,8 +26,8 @@ def read_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
 @router.put('/{user_id}')
-def update_user(id: str, user_update: UpdateUser, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.user_id == id).first()
+def update_user(user_id: str, user_update: UpdateUser, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé")
     
@@ -90,8 +90,8 @@ def login(login_user: UserLogin, db: Session = Depends(get_db)):
     }
 
 @router.delete("/{user_id}")
-def user_delete(id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.user_id == id).first()
+def user_delete(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.user_id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User non trouvé")
     db.delete(user)

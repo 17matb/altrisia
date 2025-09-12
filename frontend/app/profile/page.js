@@ -31,20 +31,52 @@ export default function ProfilePage() {
     fetchUser();
   }, []);
 
-  if (loading) return <p>Chargement...</p>;
-  if (!user) return <p>Utilisateur non trouvé</p>;
+  if (loading) return <p className="text-center mt-20 text-gray-500">Chargement...</p>;
+  if (!user) return <p className="text-center mt-20 text-red-500">Utilisateur non trouvé</p>;
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-white shadow-md rounded-lg mt-8">
-  <h1 className="text-2xl font-bold text-center mb-4">Profil utilisateur</h1>
-  
-    <div className="space-y-2">
-      <p className="text-gray-700"><span className="font-semibold text-primary/100">Nom :</span> {user.nom}</p>
-      <p className="text-gray-700"><span className="font-semibold text-primary/100">Prénom :</span> {user.prenom}</p>
-      <p className="text-gray-700"><span className="font-semibold text-primary/100">Email :</span> {user.email}</p>
+    <div className="flex justify-center mt-12 px-4">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8 border border-gray-200">
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Mon Profil</h1>
+        
+        <div className="space-y-4 mb-6">
+          <div className="flex justify-between items-center">
+            <span className="text-foreground/100 font-medium">Nom :</span>
+            <span className="text-foreground/100 font-semibold">{user.nom}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-foreground/100 font-medium">Prénom :</span>
+            <span className="text-foreground/100 font-semibold">{user.prenom}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-foreground/100 font-medium">Email :</span>
+            <span className="text-foreground/100 font-semibold">{user.email}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <Button
+            onClick={() => router.push("/edit_profile")}
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-colors"
+          >
+            Éditer le profil
+          </Button>
+          <Button 
+             onClick={()=> {
+              localStorage.removeItem("userId")
+              router.push("/login")}}
+             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition-colors"
+          >
+            Déconnexion
+          </Button>
+          <Button
+            onClick={() => router.push("/delete_profile")}
+            className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 rounded-lg transition-colors"
+          >
+            Supprimer le profil
+          </Button>
+        </div>
+      </div>
     </div>
-    <Button onClick={() => router.push("/edit_profile")} className="w-full">Éditer le profil </Button>
-    <Button onClick={() => router.push("/delete_profile")} className="w-full">Supprimer le profil </Button>
-  </div>
   );
 }
