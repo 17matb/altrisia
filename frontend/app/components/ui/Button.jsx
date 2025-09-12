@@ -1,8 +1,9 @@
-const Button = ({ children, onClick, variant, className }) => {
+const Button = ({ children, onClick, variant, type, className }) => {
   return (
     <button
       onClick={onClick}
-      className={`min-h-9 px-4 py-2 flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 ${variant === 'secondary' && 'bg-secondary hover:bg-secondary/90'} text-background cursor-pointer gap-2 ${className}`}
+      type={type}
+      className={`min-h-9 px-4 py-2 flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 ${variant === 'secondary' && 'bg-secondary hover:bg-secondary/90'} text-background cursor-pointer gap-2 duration-100 ${className}`}
     >
       {children}
     </button>
