@@ -27,7 +27,6 @@ class Post(Base):
     category_id = Column(Integer, ForeignKey('categories.category_id'), nullable=False)
     media_url = Column(String)
 
-
 class Category(Base):
     __tablename__ = 'categories'
     category_id = Column(Integer, primary_key=True, index=True)
