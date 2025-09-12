@@ -48,50 +48,35 @@ if (error || !annonce)
     );
 
 return (
-    <div className="flex bg-[#FFFEFD] min-h-screen">
-{/* Bloc droit sticky sur desktop */}
-{user && (
-<div className="hidden lg:flex flex-col items-center gap-4 w-60 p-4 bg-gray-50 rounded-2xl shadow-inner sticky top-20 mr-6">
-    <img
-    src={user.avatar || "/default-avatar.png"}
-    alt="avatar utilisateur"
-    className="w-20 h-20 rounded-full object-cover border border-gray-300"
-    />
-    <p className="font-semibold text-gray-800 text-center">{user.prenom} {user.nom}</p>
-    <Button className="px-6 py-2 text-base font-semibold shadow-md w-full mt-2">
-    Contacter
-    </Button>
-</div>
-)}
-
-
-      {/* Contenu principal */}
-    <div className="flex-1 max-w-3xl mx-auto p-6">
+    <div className="flex justify-between bg-[#FFFEFD] min-h-screen px-6 lg:px-12">
+      {/* Contenu principal centré */}
+    <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-extrabold text-[#f51C45] mb-2">{annonce.titre}</h1>
         <p className="text-sm text-gray-500 mb-4">
         {new Date(annonce.date_creation).toLocaleDateString()} • {annonce.ville}
         </p>
 
-        {/* Bloc Contact visible sur mobile */}
-     {/* Bloc mobile sous le titre */}
-{user && (
-<div className="flex lg:hidden flex-col items-start gap-2 mb-4">
-    <div className="flex items-center gap-3">
-    <img
-        src={user.avatar || "/default-avatar.png"}
-        alt="avatar utilisateur"
-        className="w-14 h-14 rounded-full object-cover border border-gray-300"
-    />
-    <p className="font-semibold text-gray-800">{user.prenom} {user.nom}</p>
-    </div>
-    <Button className="px-4 py-2 text-base font-semibold shadow-md mt-2">
-    Contacter
-    </Button>
-</div>
-)}
+        {/* Bloc Contact mobile */}
+        {user && (
+        <div className="flex lg:hidden flex-col items-start gap-2 mb-4">
+            <div className="flex items-center gap-3">
+            <img
+                src={user.avatar || "/default-avatar.png"}
+                alt="avatar utilisateur"
+                className="w-14 h-14 rounded-full object-cover border border-gray-300"
+            />
+            <p className="font-semibold text-gray-800">{user.prenom} {user.nom}</p>
+            </div>
+            <Button className="px-4 py-2 text-base font-semibold shadow-md mt-2">
+            Contacter
+            </Button>
+        </div>
+        )}
 
+        {/* Description */}
         <p className="text-gray-700 mb-6">{annonce.description}</p>
 
+        {/* Image */}
         {annonce.media_url && (
         <img
             src={annonce.media_url}
@@ -99,16 +84,35 @@ return (
             className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-2xl mb-6 shadow-md"
         />
         )}
-        {/* bloc carte google maps */}
+
+        {/* Carte Google Maps */}
         <div className="mb-6">
         <iframe
-            src={`https://www.google.com/maps?q=${encodeURIComponent(annonce.ville)}&output=embed`} // Utilisation de la ville pour centrer la carte
+            src={`https://www.google.com/maps?q=${encodeURIComponent(annonce.ville)}&output=embed`}
             className="w-full h-64 rounded-2xl shadow-md border"
             allowFullScreen
             loading="lazy"
         ></iframe>
         </div>
     </div>
+
+      {/* Bloc desktop à droite */}
+    {user && (
+        <div className="hidden lg:flex flex-col items-center gap-4 w-60 p-4 bg-gray-50 rounded-2xl shadow-inner sticky top-20">
+        <img
+            src={user.avatar || "/default-avatar.png"}
+            alt="avatar utilisateur"
+            className="w-20 h-20 rounded-full object-cover border border-gray-300"
+        />
+        <p className="font-semibold text-gray-800 text-center">{user.prenom} {user.nom}</p>
+        <Button className="px-6 py-2 text-base font-semibold shadow-md w-full mt-2">
+            Contacter
+        </Button>
+        </div>
+    )}
     </div>
 );
 }
+
+
+
