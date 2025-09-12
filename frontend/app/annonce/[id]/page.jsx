@@ -19,8 +19,9 @@ useEffect(() => {
         const resAnnonce = await fetch(`http://localhost:8000/posts/${postId}`);
         if (!resAnnonce.ok) throw new Error("Annonce introuvable");
         const dataAnnonce = await resAnnonce.json();
+        // Ajoutation  console.log pour vérifier les données
+        console.log("Annonce récupérée :", dataAnnonce);
         setAnnonce(dataAnnonce);
-
         // fetch user via query string
         const resUser = await fetch(`http://localhost:8000/users?id=${dataAnnonce.user_id}`);
         if (!resUser.ok) throw new Error("Utilisateur introuvable");
@@ -53,8 +54,12 @@ return (
     <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-extrabold text-[#f51C45] mb-2">{annonce.titre}</h1>
         <p className="text-sm text-gray-500 mb-4">
-        {new Date(annonce.date_creation).toLocaleDateString()} • {annonce.ville}
-        </p>
+  <span>{new Date(annonce.date_creation).toLocaleDateString()}</span>
+  <span className="mx-2">•</span>
+  <span className="font-medium text-gray-700">{annonce.ville || "Ville non renseignée"}</span>
+</p>
+
+
 
         {/* Bloc Contact mobile */}
         {user && (
@@ -86,16 +91,18 @@ return (
         )}
 
         {/* Carte Google Maps */}
-        <div className="mb-6">
+        {/* Avec astuce "hack" : tu passes la query ?q=ville dans l’URL publique de Maps.*/}        
+            <div className="mb-6">
         <iframe
-            src={`https://www.google.com/maps?q=${encodeURIComponent(annonce.ville)}&output=embed`}
+            src={`https://www.google.com/maps?q=${encodeURIComponent(
+            annonce.ville )
+            }&output=embed`}
             className="w-full h-64 rounded-2xl shadow-md border"
             allowFullScreen
             loading="lazy"
         ></iframe>
         </div>
     </div>
-
       {/* Bloc desktop à droite */}
     {user && (
         <div className="hidden lg:flex flex-col items-center gap-4 w-60 p-4 bg-gray-50 rounded-2xl shadow-inner sticky top-20">
