@@ -41,7 +41,7 @@ const Annonce = ({
           <p className="line-clamp-2 text-foreground/80">{description}</p>
           {/*<p>{fullName}</p>*/}
         </div>
-        <p className="first-letter:capitalize text-sm text-foreground/50">
+        <p className="first-letter:capitalize mt-2 text-sm text-foreground/50">
           {city} · {date}
         </p>
       </div>

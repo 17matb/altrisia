@@ -1,6 +1,7 @@
 import { Outfit } from 'next/font/google';
 import './globals.css';
 import Nav from './components/Nav';
+import Footer from './components/Footer';
 
 const outfit = Outfit({
   variable: '--font-outfit',
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       <body className={`${outfit.variable} antialiased max-w-7xl mx-auto px-4`}>
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );
