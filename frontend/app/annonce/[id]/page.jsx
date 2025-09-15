@@ -12,6 +12,8 @@ const [annonce, setAnnonce] = useState(null);
 const [user, setUser] = useState(null);
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState(false);
+// un state pour afficher l'email
+const [showEmail, setShowEmail] = useState(false);
 
 useEffect(() => {
     const fetchData = async () => {
@@ -79,13 +81,6 @@ const Avatar = ({ avatarUrl, size = 14 }) => {
     );
 };
 
-  // Bouton Contacter (charte couleurs globals.css)
-const ContactButton = () => (
-    <button className="px-6 py-2 rounded-xl shadow-md font-semibold text-white bg-primary hover:bg-secondary transition-colors duration-200">
-    Contacter
-    </button>
-);
-
 return (
     <div className="flex justify-between bg-background min-h-screen px-6 lg:px-12">
       {/* Contenu principal (centré) */}
@@ -112,13 +107,19 @@ return (
                 {user.prenom} {user.nom}
             </p>
             </div>
-             {/* Button avec couleurs depuis globals.css */}
-            <Button className="px-4 py-2 text-base font-semibold shadow-md mt-2 text-white bg-primary hover:bg-secondary transition-colors duration-200 rounded-xl">
-            Contacter
+
+            <Button
+            className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
+            onClick={() => setShowEmail(!showEmail)}>  Contacter
             </Button>
+
+            {showEmail && (
+            <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm">
+                Email : <span className="font-medium">{user.email}</span>
+            </div>
+            )}
         </div>
         )}
-
         {/* Description */}
         <p className="text-gray-700 mb-6">{annonce.description}</p>
 
@@ -152,15 +153,22 @@ return (
         <p className="font-semibold text-gray-800 text-center">
             {user.prenom} {user.nom}
         </p>
-        <Button className="px-6 py-2 text-base font-semibold shadow-md w-full mt-2 text-white bg-primary hover:bg-secondary transition-colors duration-200 rounded-xl">
-            Contacter
+
+        <Button
+        className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
+        onClick={() => setShowEmail(!showEmail)}>Contacter
         </Button>
+
+        {showEmail && (
+            <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm text-center">
+            Email : <span className="font-medium">{user.email}</span>
+            </div>
+        )}
         </div>
     )}
     </div>
 );
 }
-
 
 
 
