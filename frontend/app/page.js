@@ -30,7 +30,7 @@ export default function Home() {
             title={annonce.titre}
             description={annonce.description}
             city={annonce.ville}
-            date={'hier à 16:04'}
+            date={annonce.date_creation}
             key={`annonce-${index}`}
           />
         ))}
