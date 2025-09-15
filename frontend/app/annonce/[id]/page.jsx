@@ -48,28 +48,38 @@ if (error || !annonce)
     </p>
     );
 
+// Fallback avatar avec emoji
+const Avatar = ({ avatarUrl, size = 14 }) => {
+    return avatarUrl ? (
+    <img
+        src={avatarUrl}
+        alt="avatar utilisateur"
+        className={`w-${size} h-${size} rounded-full object-cover border border-gray-300`}
+    />
+    ) : (
+    <div
+        className={`w-${size} h-${size} rounded-full bg-gray-300 flex items-center justify-center border border-gray-300`}
+    >
+        <span className="text-white text-xl">👤</span>
+    </div>
+    );
+};
+
 return (
     <div className="flex justify-between bg-[#FFFEFD] min-h-screen px-6 lg:px-12">
       {/* Contenu principal centré */}
     <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-extrabold text-[#f51C45] mb-2">{annonce.titre}</h1>
         <p className="text-sm text-gray-500 mb-4">
-<span>{new Date(annonce.date_creation).toLocaleDateString()}</span>
-<span className="mx-2">•</span>
-<span className="font-medium text-gray-700">{annonce.ville || "Ville non renseignée"}</span>
-</p>
-
-
-
+        <span>{new Date(annonce.date_creation).toLocaleDateString()}</span>
+        <span className="mx-2">•</span>
+        <span className="font-medium text-gray-700">{annonce.ville || "Ville non renseignée"}</span>
+        </p>
         {/* Bloc Contact mobile */}
         {user && (
         <div className="flex lg:hidden flex-col items-start gap-2 mb-4">
             <div className="flex items-center gap-3">
-            <img
-                src={user.avatar || "/default-avatar.png"}
-                alt="avatar utilisateur"
-                className="w-14 h-14 rounded-full object-cover border border-gray-300"
-            />
+            <Avatar avatarUrl={user.avatar} size={14} />
             <p className="font-semibold text-gray-800">{user.prenom} {user.nom}</p>
             </div>
             <Button className="px-4 py-2 text-base font-semibold shadow-md mt-2">
@@ -106,11 +116,7 @@ return (
       {/* Bloc desktop à droite */}
     {user && (
         <div className="hidden lg:flex flex-col items-center gap-4 w-60 p-4 bg-gray-50 rounded-2xl shadow-inner sticky top-20">
-        <img
-            src={user.avatar || "/default-avatar.png"}
-            alt="avatar utilisateur"
-            className="w-20 h-20 rounded-full object-cover border border-gray-300"
-        />
+        <Avatar avatarUrl={user.avatar} size={20} />
         <p className="font-semibold text-gray-800 text-center">{user.prenom} {user.nom}</p>
         <Button className="px-6 py-2 text-base font-semibold shadow-md w-full mt-2">
             Contacter
