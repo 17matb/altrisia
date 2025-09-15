@@ -39,6 +39,9 @@ def update_user(user_id: str, user_update: UpdateUser, db: Session = Depends(get
         user.email = user_update.email
     if user_update.password is not None:
         user.mdp_hash = hash_password(user_update.password)
+    if user_update.avatar is not None:
+        user.avatar = user_update.avatar
+
 
     db.commit()
     db.refresh(user)
@@ -86,7 +89,11 @@ def login(login_user: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Password not valid")
     return {
         "message": "Bienvenue",
-        "user_id": user.user_id
+        "user_id": user.user_id,
+        "avatar": user.avatar, 
+        "nom": user.nom,
+        "prenom": user.prenom,
+        "email": user.email
     }
 
 @router.delete("/{user_id}")

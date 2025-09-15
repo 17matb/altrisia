@@ -7,23 +7,37 @@ import { SquarePen } from "lucide-react";
 
 export default function EditProfilePage() {
   const router = useRouter();
-  const [user, setUser] = useState({ nom: "", prenom: "", email: "", password: "" });
-  const [editing, setEditing] = useState({ nom: false, prenom: false, email: false, password: false });
-  const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+  const [user, setUser] = useState({ nom: "", prenom: "", email: "", password: "", avatar: "" });
+  const [editing, setEditing] = useState({ nom: false, prenom: false, email: false, password: false, avatar: false });
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    if (!userId) return router.push("/login");
+    if (typeof window !== "undefined") {
+      const id = localStorage.getItem("userId");
+      if (!id) router.push("/login");
+      else setUserId(id);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
     fetch(`http://127.0.0.1:8000/users/${userId}`)
       .then(res => res.json())
-      .then(data => setUser({ nom: data.nom ?? "", prenom: data.prenom ?? "", email: data.email ?? "", password: data.password ?? "" }))
+      .then(data => setUser({
+        nom: data.nom ?? "",
+        prenom: data.prenom ?? "",
+        email: data.email ?? "",
+        password: "",
+        avatar: data.avatar ?? ""
+      }))
       .catch(() => console.log("Erreur chargement profil"));
-  }, [router, userId]);
+  }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const payload = {};
-      ["nom","prenom","email","password"].forEach(f => {
+      ["nom", "prenom", "email", "password", "avatar"].forEach(f => {
         if (editing[f]) payload[f] = user[f];
       });
 
@@ -35,6 +49,9 @@ export default function EditProfilePage() {
 
       const data = await res.json();
       if (!res.ok) return alert(data.detail?.[0]?.msg || data.message || "Erreur");
+
+      if (data.user?.avatar) localStorage.setItem("userAvatar", data.user.avatar);
+
       alert(data.message);
       router.push("/profile");
     } catch {
@@ -46,16 +63,16 @@ export default function EditProfilePage() {
 
   return (
     <div className="flex justify-center mt-12 px-4">
-      <form 
-        onSubmit={handleSubmit} 
+      <form
+        onSubmit={handleSubmit}
         className="w-full max-w-md p-8 rounded-2xl border shadow-lg space-y-4"
         style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}
       >
         <h1 className="text-2xl font-bold text-center mb-4">Éditer le profil</h1>
 
-        {["nom", "prenom", "email", "password"].map((field) => (
-          <div 
-            key={field} 
+        {["nom", "prenom", "email", "password", "avatar"].map((field) => (
+          <div
+            key={field}
             className="flex items-center gap-2 p-2 border rounded"
             style={{
               borderColor: editing[field] ? "var(--primary)" : "var(--foreground)",
@@ -79,8 +96,8 @@ export default function EditProfilePage() {
           </div>
         ))}
 
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="w-full py-2 rounded-lg font-semibold"
           style={{ backgroundColor: "var(--primary)", color: "var(--background)" }}
         >

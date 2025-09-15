@@ -30,6 +30,7 @@ export default function ConnexionPage() {
       }
 
       localStorage.setItem("userId", data.user_id);
+      localStorage.setItem("userAvatar", data.avatar || "");
       router.push("/profile");
     } catch (err) {
       setMessage("Erreur serveur");
@@ -42,7 +43,7 @@ export default function ConnexionPage() {
       <User />
       <input type="email" value={email} placeholder="example@domain.com" onChange={(e) => setEmail(e.target.value)} required className="border border-foreground/10 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"/>
       <Lock />
-      <input type="password" value={password} placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required className="border border-foreground/10 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"/>
+      <input type="password" value={password} placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} className="border border-foreground/10 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"/>
       <Button type="submit">Se connecter</Button>
       {message && <p>{message}</p>}
     </form>

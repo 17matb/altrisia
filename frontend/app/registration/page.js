@@ -29,6 +29,11 @@ export default function ConnexionPage() {
             setMessage(data.detail);
             return;
         }
+
+        localStorage.setItem("userId", data.user_id);
+        localStorage.removeItem("userAvatar");
+        localStorage.removeItem("userAvatarUserId");
+
         setMessage("Compte créé");
         localStorage.setItem("userId", data.user_id);
         router.push("/profile");
