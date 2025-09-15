@@ -54,9 +54,9 @@ return (
     <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-extrabold text-[#f51C45] mb-2">{annonce.titre}</h1>
         <p className="text-sm text-gray-500 mb-4">
-  <span>{new Date(annonce.date_creation).toLocaleDateString()}</span>
-  <span className="mx-2">•</span>
-  <span className="font-medium text-gray-700">{annonce.ville || "Ville non renseignée"}</span>
+<span>{new Date(annonce.date_creation).toLocaleDateString()}</span>
+<span className="mx-2">•</span>
+<span className="font-medium text-gray-700">{annonce.ville || "Ville non renseignée"}</span>
 </p>
 
 
