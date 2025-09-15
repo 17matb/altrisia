@@ -124,7 +124,7 @@ const Nav = () => {
                   {mainCategories.map((category, index) => (
                     <Fragment key={`category-${category.category_id}`}>
                       <Link
-                        href={`category/${category.category_id.toString()}`}
+                        href={`/category/${category.category_id.toString()}`}
                         className="hover:bg-foreground/5 rounded-md duration-100"
                       >
                         {category.nom}
@@ -151,7 +151,7 @@ const Nav = () => {
                             {otherCategories.map((category) => (
                               <Link
                                 key={`other-category-${category.category_id}`}
-                                href={`category/${category.category_id.toString()}`}
+                                href={`/category/${category.category_id.toString()}`}
                                 className="hover:bg-foreground/5 rounded-md duration-100"
                               >
                                 {category.nom}
