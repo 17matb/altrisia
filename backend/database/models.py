@@ -1,5 +1,3 @@
-### Grâce à ça, SQLAlchemy ou une autre ORM sait comment communiquer avec la base de données sans écrire les requêtes SQL à la main.
-
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime, timezone
