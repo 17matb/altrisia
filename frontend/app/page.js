@@ -19,7 +19,7 @@ export default function Home() {
   }, [isDemande, page]);
   return (
     <>
-      <CTA />
+      <CTA postType="proposition" />
       <FilterBar isDemande={isDemande} setIsDemande={setIsDemande} />
       <div className="flex flex-col gap-4">
         {annonces.map((annonce, index) => (
@@ -36,6 +36,7 @@ export default function Home() {
         ))}
       </div>
       <PageNumberBar page={page} setPage={setPage} totalPages={totalPages} />
+      <CTA postType="demande" />
     </>
   );
 }
