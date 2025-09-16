@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from routers import users, posts, categories
 from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="Altrisia API",
     description="API pour les services gratuits de bénévolat",
