@@ -58,11 +58,13 @@ def create_post(post: schemas.PostCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_post)
     return {
+        'type_demande': new_post.type_demande,
         'titre': new_post.titre,
         'description': new_post.description,
         'user_id': new_post.user_id,
         'category_id': new_post.category_id,
         'media_url': new_post.media_url,
+        'ville': new_post.ville,
     }
 
 

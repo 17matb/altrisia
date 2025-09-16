@@ -1,22 +1,24 @@
 'use client';
-import Annonce from './components/Annonce';
-import { getPosts } from './services/annonces';
-import CTA from './components/CTA';
-import FilterBar from './components/FilterBar';
+import React from 'react';
+import Annonce from '@/app/components/Annonce';
+import CTA from '@/app/components/CTA';
+import FilterBar from '@/app/components/FilterBar';
+import PageNumberBar from '@/app/components/PageNumberBar';
+import { getPosts } from '@/app/services/annonces';
 import { useEffect, useState } from 'react';
-import PageNumberBar from './components/PageNumberBar';
 
-export default function Home() {
+const Page = ({ params }) => {
+  const { id } = React.use(params);
   const [isDemande, setIsDemande] = useState(undefined);
   const [annonces, setAnnonces] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   useEffect(() => {
-    getPosts(page, 20, isDemande).then((data) => {
+    getPosts(page, 20, isDemande, id).then((data) => {
       setAnnonces(data.posts);
       setTotalPages(data.total_pages);
     });
-  }, [isDemande, page]);
+  }, [isDemande, page, id]);
   return (
     <>
       <CTA postType="proposition" />
@@ -39,4 +41,6 @@ export default function Home() {
       <CTA postType="demande" />
     </>
   );
-}
+};
+
+export default Page;

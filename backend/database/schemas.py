@@ -41,6 +41,7 @@ class UpdateUser(BaseModel):
     avatar: str | None = None
 
 
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str

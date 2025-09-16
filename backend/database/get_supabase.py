@@ -7,54 +7,55 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Fetch variables
-USER = os.getenv("USERNAME")
-PASSWORD = os.getenv("PASS")
-HOST = os.getenv("HOST")
-PORT = os.getenv("PORT")
-SUPABASE_DB = os.getenv("DBNAME")
+USER = os.getenv('USERNAME')
+PASSWORD = os.getenv('PASS')
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+SUPABASE_DB = os.getenv('DBNAME')
 
 DATABASE_CONFIG = {
-    'host': HOST,  
+    'host': HOST,
     'database': SUPABASE_DB,
     'user': USER,
     'password': PASSWORD,
-    'port': PORT
+    'port': PORT,
 }
-    
+
 # Création de l'engine SQLAlchemy
 engine = create_engine(
-    f"postgresql://{USER}:{PASSWORD}@"
-    f"{HOST}:{PORT}/{SUPABASE_DB}", pool_size=1, max_overflow=0
+    f'postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{SUPABASE_DB}',
+    pool_size=1,
+    max_overflow=0,
 )
+
 
 # Test de connexion
 def test_connection():
     # Connect to the database
     try:
         connection = psycopg2.connect(
-            user=USER,
-            password=PASSWORD,
-            host=HOST,
-            port=PORT,
-            dbname=SUPABASE_DB
+            user=USER, password=PASSWORD, host=HOST, port=PORT, dbname=SUPABASE_DB
         )
-        print("Connection successful!")
-        
+        print('Connection successful!')
+
         # Create a cursor to execute SQL queries
         cursor = connection.cursor()
-        
+
         # Example query
-        cursor.execute("SELECT version();")
+        cursor.execute('SELECT version();')
         result = cursor.fetchone()
-        print("Current Time:", result)
+        print('Current Time:', result)
 
         # Close the cursor and connection
         cursor.close()
         connection.close()
-        print("Connection closed.")
+        print('Connection closed.')
     except Exception as e:
-        print(f"Failed to connect: {e}")
+        print(f'Failed to connect: {e}')
+
+
 test_connection()
+
 
 def create_tables():
     sql = """
@@ -83,5 +84,6 @@ def create_tables():
     );
     """
     with engine.connect() as conn:
-            conn.execute(text(sql))
-            conn.commit()
+        conn.execute(text(sql))
+        conn.commit()
+
