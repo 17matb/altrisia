@@ -99,7 +99,7 @@ const Nav = () => {
                     </Link>
                     <Link
                       className="hover:bg-foreground/5 rounded-md duration-100"
-                      href="/register"
+                      href="/registration"
                     >
                       S&apos;inscrire
                     </Link>

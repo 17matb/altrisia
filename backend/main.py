@@ -17,14 +17,6 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'http://localhost:3001'],  # Next.js
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 # Inclusion des routers
 app.include_router(users.router)
 app.include_router(posts.router)

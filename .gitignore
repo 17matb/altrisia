@@ -4,3 +4,6 @@ __pycache__
 *.pyc
 backend/uv.lock
 .env
+docker-compose.yml
+backend/Dockerfile
+frontend/Dockerfile
