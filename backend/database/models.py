@@ -1,6 +1,4 @@
-### Grâce à ça, SQLAlchemy ou une autre ORM sait comment communiquer avec la base de données sans écrire les requêtes SQL à la main.
-
-from sqlalchemy import Column, Integer, String, ForeignKey, TIMESTAMP
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
@@ -29,6 +27,8 @@ class Post(Base):
     user_id = Column(Integer, ForeignKey('users.user_id'), nullable=False)
     category_id = Column(Integer, ForeignKey('categories.category_id'), nullable=False)
     media_url = Column(String)
+    ville = Column(String)
+    type_demande = Column(Boolean)
     user = relationship("User", back_populates="posts")
 
 

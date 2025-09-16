@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from math import ceil
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from database.datasession import SessionLocal
@@ -16,18 +17,38 @@ def get_db():
 
 
 @router.get('/')
-def read_posts(db: Session = Depends(get_db)):
-    all_posts = db.query(models.Post).all()
-    return [
-        {
-            'titre': post.titre,
-            'description': post.description,
-            'user_id': post.user_id,
-            'category_id': post.category_id,
-            'media_url': post.media_url,
-        }
-        for post in all_posts
-    ]
+def read_posts(
+    page: int = Query(1, ge=1),
+    limit: int = Query(25, ge=1, le=50),
+    type_demande: bool | None = None,
+    category_id: int | None = None,
+    db: Session = Depends(get_db),
+):
+    query = db.query(models.Post)
+    if type_demande is not None:
+        query = query.filter(models.Post.type_demande == type_demande)
+    if category_id is not None:
+        query = query.filter(models.Post.category_id == category_id)
+    total_posts = query.count()
+    offset = (page - 1) * limit
+    posts = query.offset(offset).limit(limit).all()
+    return {
+        'posts': [
+            {
+                'titre': post.titre,
+                'description': post.description,
+                'user_id': post.user_id,
+                'category_id': post.category_id,
+                'media_url': post.media_url,
+                'ville': post.ville,
+                'date_creation': post.date_creation,
+                'type_demande': post.type_demande,
+            }
+            for post in posts
+        ],
+        'total_pages': ceil(total_posts / limit),
+        'current_page': page,
+    }
 
 
 @router.post('/')

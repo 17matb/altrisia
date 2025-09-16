@@ -8,6 +8,8 @@ class PostCreate(BaseModel):
     user_id: int
     category_id: int
     media_url: str | None
+    ville: str | None
+    type_demande: bool
 
 
 class PostRead(PostCreate):
@@ -20,6 +22,9 @@ class PostUpdate(BaseModel):
     description: str | None = None
     category_id: int | None = None
     media_url: str | None = None
+    ville: str | None
+    type_demande: bool | None = None
+
 
 class UserCreate(BaseModel):
     nom: str
@@ -27,12 +32,14 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
 
+
 class UpdateUser(BaseModel):
     nom: str | None = None
     prenom: str | None = None
     email: str | None = None
     password: str | None = None
     avatar: str | None = None
+
 
 class UserLogin(BaseModel):
     email: EmailStr
