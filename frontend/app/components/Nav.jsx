@@ -35,7 +35,7 @@ const Nav = () => {
     setIsHamburgerOpened(!isHamburgerOpened);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!navbarRef.current) return;
     const resizeObserver = new ResizeObserver((entries) =>
       setNavbarHeight(entries[0].contentRect.height),
