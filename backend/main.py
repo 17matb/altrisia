@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import users, posts, categories
+from routers import users, posts, categories, search
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(posts.router)
 app.include_router(categories.router)
+app.include_router(search.router)
 
 
 @app.get(
