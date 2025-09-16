@@ -98,28 +98,31 @@ return (
         </span>
         </p>
 
-        {/* Bloc Contact mobile */}
-        {user && (
-        <div className="flex lg:hidden flex-col items-start gap-2 mb-4">
-            <div className="flex items-center gap-3">
-            <Avatar avatarUrl={user.avatar} size={14} />
-            <p className="font-semibold text-gray-800">
-                {user.prenom} {user.nom}
-            </p>
-            </div>
+        {/* Bloc Contact (même emplacement, même style mobile & desktop) */}
+{user && (
+<div className="flex flex-col items-start gap-2 mb-4">
+    <div className="flex items-center gap-3">
+    <Avatar avatarUrl={user.avatar} size={14} />
+    <p className="font-semibold text-gray-800">
+        {user.prenom} {user.nom}
+    </p>
+    </div>
 
-            <Button
-            className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
-            onClick={() => setShowEmail(!showEmail)}>  Contacter
-            </Button>
+    <Button
+    className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
+    onClick={() => setShowEmail(!showEmail)}
+    >
+    Contacter
+    </Button>
 
-            {showEmail && (
-            <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm">
-                Email : <span className="font-medium">{user.email}</span>
-            </div>
-            )}
-        </div>
-        )}
+    {showEmail && (
+    <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm">
+        Email : <span className="font-medium">{user.email}</span>
+    </div>
+    )}
+</div>
+)}
+
         {/* Description */}
         <p className="text-gray-700 mb-6">{annonce.description}</p>
 
@@ -145,27 +148,6 @@ return (
         ></iframe>
         </div>
     </div>
-
-      {/* Bloc Contact desktop(à droite ) */}
-    {user && (
-        <div className="hidden lg:flex flex-col items-center gap-4 w-60 p-4 bg-gray-50 rounded-2xl shadow-inner sticky top-20">
-        <Avatar avatarUrl={user.avatar} size={20} />
-        <p className="font-semibold text-gray-800 text-center">
-            {user.prenom} {user.nom}
-        </p>
-
-        <Button
-        className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
-        onClick={() => setShowEmail(!showEmail)}>Contacter
-        </Button>
-
-        {showEmail && (
-            <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm text-center">
-            Email : <span className="font-medium">{user.email}</span>
-            </div>
-        )}
-        </div>
-    )}
     </div>
 );
 }
