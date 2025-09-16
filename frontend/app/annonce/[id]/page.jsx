@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Button from "../../components/ui/Button";
+import Link from "next/link";  // ⚡ import pour naviguer vers page édition
 
 
 export default function AnnonceDetail() {
@@ -14,6 +15,8 @@ const [loading, setLoading] = useState(true);
 const [error, setError] = useState(false);
 // un state pour afficher l'email
 const [showEmail, setShowEmail] = useState(false);
+ //  nouvel état pour stocker l’utilisateur connecté
+const [currentUserId, setCurrentUserId] = useState(null);
 
 useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +46,11 @@ useEffect(() => {
     };
 
     if (postId) fetchData();
+// récupérer user connecté depuis localStorage
+    const storedUserId = localStorage.getItem("userId");
+    setCurrentUserId(storedUserId);
 }, [postId]);
+
 
   // Loading
 if (loading) {
@@ -104,12 +111,28 @@ return (
         {user.prenom} {user.nom}
     </p>
     </div>
-    { <Button
-    className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
-    onClick={() => setShowEmail(!showEmail)}
+     {/* Contacter et Modifier sur la même ligne */}
+    <div className="flex gap-3">
+      {/* Bouton Modifier */}
+    {currentUserId && parseInt(currentUserId) === annonce.user_id && (
+        <Button
+        className="px-4 py-2 text-base font-semibold shadow-md rounded transition-all duration-200 hover:bg-secondary hover:text-white"
+        onClick={() => alert("Redirection vers modification...")}
+        >
+        Modifier
+        </Button>
+    )}
+
+      {/* Bouton Contacter */}
+    <Button
+        className="px-4 py-2 text-base font-semibold shadow-md rounded transition-all duration-200 hover:bg-secondary hover:text-white"
+        onClick={() => setShowEmail(!showEmail)}
     >
-    Contacter
-    </Button>}
+        Contacter
+    </Button>
+    </div>
+            
+
 
     {showEmail && (
     <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm">
