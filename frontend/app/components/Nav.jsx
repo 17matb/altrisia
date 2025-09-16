@@ -9,7 +9,7 @@ import {
 import Button from './ui/Button';
 import SearchBar from './ui/SearchBar';
 import Link from 'next/link';
-import { Plus, User } from 'lucide-react';
+import { Plus, User, UserPlus } from 'lucide-react';
 import { categories } from '../services/categories';
 import Logo from './ui/Logo';
 
@@ -19,11 +19,17 @@ const Nav = () => {
   const [navbarHeight, setNavbarHeight] = useState();
   const [hasScrolled, setHasScrolled] = useState(false);
 
+  const [userId, setUserId] = useState(null);
   const navbarRef = useRef(null);
 
   const mainCategories = categories.slice(0, 8);
   const otherCategories = categories.slice(8);
-  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUserId(localStorage.getItem('userId'));
+    }
+  }, []);
 
   const handleIsHamburgerOpened = () => {
     setIsHamburgerOpened(!isHamburgerOpened);
@@ -52,13 +58,13 @@ const Nav = () => {
     <>
       <nav
         ref={navbarRef}
-        className={`${hasScrolled ? 'fixed' : 'absolute'} w-full flex justify-center top-0 left-0 bg-background z-20 ${hasScrolled && 'drop-shadow-xl/5'} rounded-b-3xl lg:rounded-none`}
+        className={`${hasScrolled ? 'fixed' : 'absolute'} w-full flex justify-center top-0 left-0 bg-background z-50 ${hasScrolled && 'drop-shadow-xl/5'} rounded-b-3xl lg:rounded-none overflow-hidden`}
       >
         <div className="max-w-7xl w-full px-4">
           <div className="flex flex-col ">
             <div className="flex flex-col lg:flex-row w-full lg:items-center justify-center gap-2 lg:gap-4 py-4">
               <div className="flex w-full lg:w-fit justify-between">
-                <Link href="/">
+                <Link onClick={() => setIsHamburgerOpened(false)} href="/">
                   <Logo />
                 </Link>
                 <div
@@ -165,9 +171,81 @@ const Nav = () => {
                 </motion.div>
               )}
             </AnimatePresence>
+            <AnimatePresence>
+              {isHamburgerOpened && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0, y: -20, marginBottom: 0, height: 0 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      marginBottom: '0.5rem',
+                      height: 'auto',
+                    }}
+                    exit={{ opacity: 0, y: -20, marginBottom: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className=""
+                  >
+                    <Link className="" href={'/new-post'}>
+                      <button
+                        onClick={() => handleIsHamburgerOpened()}
+                        className="py-2 w-full flex items-center gap-2 border-b border-foreground/5"
+                      >
+                        <Plus size={20} />
+                        Poster une annonce
+                      </button>
+                    </Link>
+                    {userId ? (
+                      <Link href={'/profile'}>
+                        <button
+                          onClick={() => handleIsHamburgerOpened()}
+                          className="py-2 w-full flex items-center gap-2"
+                        >
+                          <User size={20} />
+                          Mon profil
+                        </button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link href={'/login'}>
+                          <button
+                            onClick={() => handleIsHamburgerOpened()}
+                            className="py-2 w-full flex items-center gap-2 border-b border-foreground/5"
+                          >
+                            <User size={20} />
+                            Se connecter
+                          </button>
+                        </Link>
+                        <Link href={'/registration'}>
+                          <button
+                            onClick={() => handleIsHamburgerOpened()}
+                            className="py-2 w-full flex items-center gap-2"
+                          >
+                            <UserPlus size={20} />
+                            S&apos;inscrire
+                          </button>
+                        </Link>
+                      </>
+                    )}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </nav>
+      <AnimatePresence>
+        {isHamburgerOpened && (
+          <motion.div
+            onClick={() => handleIsHamburgerOpened()}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bg-foreground/50 backdrop-blur-md h-dvh w-full left-0 top-0 z-10"
+          ></motion.div>
+        )}
+      </AnimatePresence>
       <div style={{ height: navbarHeight }}></div>
     </>
   );
