@@ -23,7 +23,14 @@ const Nav = () => {
 
   const mainCategories = categories.slice(0, 8);
   const otherCategories = categories.slice(8);
-  const userId = localStorage.getItem('userId');
+
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUserId(localStorage.getItem('userId'));
+    }
+  }, []);
 
   const handleIsHamburgerOpened = () => {
     setIsHamburgerOpened(!isHamburgerOpened);
