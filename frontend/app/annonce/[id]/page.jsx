@@ -64,21 +64,18 @@ if (error || !annonce) {
 }
 
   // Composant Avatar(Fallback avatar avec emoji)
-const Avatar = ({ avatarUrl, size = 14 }) => {
-    const sizeClass = `w-${size} h-${size}`;
-    return avatarUrl ? (
+const Avatar = ({ avatarUrl }) => {
+return avatarUrl ? (
     <img
-        src={avatarUrl}
-        alt="avatar utilisateur"
-        className={`${sizeClass} rounded-full object-cover border border-gray-300`}
+    src={avatarUrl}
+    alt="avatar utilisateur"
+    className="w-14 h-14 rounded-full object-cover border border-gray-300"
     />
-    ) : (
-    <div
-        className={`${sizeClass} rounded-full bg-gray-300 flex items-center justify-center border border-gray-300`}
-    >
-        <span className="text-white text-lg">👤</span>
+) : (
+    <div className="w-14 h-14 rounded-full bg-gray-300 flex items-center justify-center border border-gray-300">
+    <span className="text-white text-lg">👤</span>
     </div>
-    );
+);
 };
 
 return (
@@ -107,13 +104,12 @@ return (
         {user.prenom} {user.nom}
     </p>
     </div>
-
-    <Button
+    { <Button
     className="px-4 py-2 text-base font-semibold shadow-md mt-2 rounded transition-all duration-200 hover:bg-secondary hover:text-white"
     onClick={() => setShowEmail(!showEmail)}
     >
     Contacter
-    </Button>
+    </Button>}
 
     {showEmail && (
     <div className="mt-2 p-2 bg-gray-100 rounded shadow-inner text-sm">
