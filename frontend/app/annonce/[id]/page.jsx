@@ -115,12 +115,12 @@ return (
     <div className="flex gap-3">
       {/* Bouton Modifier */}
     {currentUserId && parseInt(currentUserId) === annonce.user_id && (
-        <Button
-        className="px-4 py-2 text-base font-semibold shadow-md rounded transition-all duration-200 hover:bg-secondary hover:text-white"
-        onClick={() => alert("Redirection vers modification...")}
-        >
-        Modifier
-        </Button>
+       <Link href={`/edit/${annonce.post_id}`}>
+  <Button className="px-4 py-2 text-base font-semibold shadow-md rounded transition-all duration-200 hover:bg-secondary hover:text-white">
+    Modifier
+  </Button>
+</Link>
+
     )}
 
       {/* Bouton Contacter */}
