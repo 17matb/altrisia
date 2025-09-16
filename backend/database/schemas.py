@@ -38,6 +38,8 @@ class UpdateUser(BaseModel):
     prenom: str | None = None
     email: str | None = None
     password: str | None = None
+    avatar: str | None = None
+
 
 
 class UserLogin(BaseModel):

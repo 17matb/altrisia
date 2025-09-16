@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import users, posts, categories
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title='Altrisia API',
@@ -14,6 +15,14 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['http://localhost:3000', 'http://localhost:3001'],  # Next.js
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Inclusion des routers
