@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import Button from './ui/Button';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const CTA = ({ postType }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -95,16 +96,18 @@ const CTA = ({ postType }) => {
           ? 'Vous souhaitez faire une bonne action ?'
           : postType === 'demande' && "Besoin d'un coup de main ?"}
       </p>
-      <Button
-        variant={
-          postType === 'proposition'
-            ? 'secondary'
-            : postType === 'demande' && 'primary'
-        }
-      >
-        <Plus size={20} />
-        Publiez une annonce
-      </Button>
+      <Link href={'/new-post'}>
+        <Button
+          variant={
+            postType === 'proposition'
+              ? 'secondary'
+              : postType === 'demande' && 'primary'
+          }
+        >
+          <Plus size={20} />
+          Publiez une annonce
+        </Button>
+      </Link>
     </section>
   );
 };
