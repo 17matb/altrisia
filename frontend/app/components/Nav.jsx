@@ -19,17 +19,23 @@ const Nav = () => {
   const [navbarHeight, setNavbarHeight] = useState();
   const [hasScrolled, setHasScrolled] = useState(false);
 
+  const [userId, setUserId] = useState(null)
   const navbarRef = useRef(null);
 
   const mainCategories = categories.slice(0, 8);
   const otherCategories = categories.slice(8);
-  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setUserId(localStorage.getItem('userId'));
+    }
+  }, []);
 
   const handleIsHamburgerOpened = () => {
     setIsHamburgerOpened(!isHamburgerOpened);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!navbarRef.current) return;
     const resizeObserver = new ResizeObserver((entries) =>
       setNavbarHeight(entries[0].contentRect.height),
