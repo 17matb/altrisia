@@ -64,43 +64,39 @@ def list_categories(db: Session = Depends(get_db)):
 def verify_and_reset_categories(db: Session = Depends(get_db)):
     corrected = []
 
-    # Récupérer toutes les catégories existantes
+    # Récupérer toutes les catégories existantes en dict {id: objet}
     existing = {c.category_id: c for c in db.query(models.Category).all()}
 
-    for cat_id, cat_name in FIXED_CATEGORIES:
-        cat = existing.get(cat_id)
-        if cat and cat.nom != cat_name:
-            cat.nom = cat_name
+    for cat in FIXED_CATEGORIES:
+        cat_id = cat["category_id"]
+        cat_name = cat["nom"]
+
+        existing_cat = existing.get(cat_id)
+
+        if existing_cat and existing_cat.nom != cat_name:
+            existing_cat.nom = cat_name
             corrected.append(cat_name)
-        elif not cat:  # elif=sinon si , au lieu de faire une autre requête pour vérifier si la catégorie existe on utilise le dictionnaire existant
+        elif not existing_cat:
             db.add(models.Category(category_id=cat_id, nom=cat_name))
             corrected.append(cat_name)
-        # if cat_id in existing:
-        #     if existing[cat_id].nom != cat_name:
-        #         existing[cat_id].nom = cat_name
-        #         corrected.append(cat_name)
-        # else:
-        #     new_cat = models.Category(category_id=cat_id, nom=cat_name)
-        #     db.add(new_cat)
-        #     corrected.append(cat_name)
 
     db.commit()
-    # Liste complète après correction
+
+    # Liste complète 
     all_categories = [
-        {'category_id': c.category_id, 'nom': c.nom}
+        {"category_id": c.category_id, "nom": c.nom}
         for c in db.query(models.Category).all()
-    ]  # creation d'une liste de dictionnaires pour chaque catégorie
-    # in db.query : on récupère toutes les catégories de la base de données
+    ]
+
     return {
-        'message': f'{len(corrected)} catégories corrigées ou ajoutées automatiquement'
+        "message": f"{len(corrected)} catégories corrigées ou ajoutées automatiquement"
         if corrected
-        else 'Toutes les catégories sont correctes',
-        'corrected_categories': corrected,
-        'total_categories': len(
-            all_categories
-        ),  # len :ça sert à compter le nombre d'éléments dans une liste ici pour compter le nombre total de catégories
-        'categories': all_categories,
+        else "Toutes les catégories sont correctes",
+        "corrected_categories": corrected,
+        "total_categories": len(all_categories),
+        "categories": all_categories,
     }
+
 
 
 # Obtenir une catégorie par ID
