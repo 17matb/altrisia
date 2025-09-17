@@ -13,6 +13,7 @@ import { Plus, User, UserPlus } from 'lucide-react';
 import { categories } from '../services/categories';
 import Logo from './ui/Logo';
 
+
 const Nav = () => {
   const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
   const [isOthersHovered, setIsOthersHovered] = useState(false);

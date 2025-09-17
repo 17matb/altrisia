@@ -1,0 +1,137 @@
+"use client";// Composant React côté client pour dire à Next.js que ce composant utilise des hooks d'état et d'effet
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Button from "../../components/ui/Button";
+
+export default function EditPost() { // Composant pour éditer une annonce
+  const params = useParams();   // Récupérer les paramètres de l'URL
+  const postId = params.id; // ID de l'annonce à éditer
+  const router = useRouter(); // Pour la navigation après la soumission
+
+  // États pour gérer le formulaire
+
+  const [formData, setFormData] = useState({  // état pour les données du formulaire
+    titre: "",
+    description: "",
+    ville: "",
+    media_url: "",
+  });
+  const [loading, setLoading] = useState(true); // état pour le chargement de l'annonce
+  const [error, setError] = useState(false); // état pour gérer les erreurs
+  const [success, setSuccess] = useState(false); // pour afficher le message de succès
+
+  // Charger l'annonce existante
+  useEffect(() => {   // Fonction pour charger les données de l'annonce
+    const fetchPost = async () => { 
+      try {
+        const res = await fetch(`http://localhost:8000/posts/${postId}`);
+        if (!res.ok) throw new Error("Annonce introuvable");
+        const data = await res.json();
+        setFormData({ // Pré-remplir le formulaire avec les données existantes
+          titre: data.titre,
+          description: data.description, 
+          ville: data.ville || "", // Valeur par défaut si ville est undefined
+          media_url: data.media_url || "",
+        });
+      } catch (err) { // Gérer les erreurs
+        console.error(err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPost();
+  }, [postId]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value }); // Mettre à jour les données du formulaire
+  };
+
+  const handleSubmit = async (e) => { // Gérer la soumission du formulaire
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://localhost:8000/posts/${postId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error("Erreur lors de la modification"); // Gérer les erreurs de la requête
+      // Si la modification est réussie, afficher le message de succès
+      // et vider le formulaire
+
+      setSuccess(true); // afficher le message de succès
+      setFormData({ titre: "", description: "", ville: "", media_url: "" }); // vider le formulaire
+
+    
+    } catch (err) { 
+      console.error(err);
+      alert("Impossible de modifier l'annonce");// Alerter l'utilisateur en cas d'erreur
+    }
+  };
+
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p className="text-red-500">Annonce introuvable</p>;
+
+  return (
+    <div className="max-w-3xl mx-auto p-6">  // Conteneur principal qui contient le formulaire
+
+      // Formulaire d'édition ou message de succès est affiché en fonction de l'état success
+      {!success && (
+        <>
+          <h1 className="text-2xl font-bold mb-4">Modifier l’annonce</h1> // Titre de la page
+          {/* Formulaire d'édition */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4"> // Formulaire avec gestion de la soumission
+            <input 
+              type="text"
+              name="titre"
+              value={formData.titre}
+              onChange={handleChange}
+              placeholder="Titre"
+              className="border p-2 rounded"
+              required
+            /> // Champ de saisie pour le titre
+            <textarea 
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Description"
+              className="border p-2 rounded"
+              rows={6}
+              required
+            /> // Champ de saisie pour la description
+            <input
+              type="text"
+              name="ville"
+              value={formData.ville}
+              onChange={handleChange}
+              placeholder="Ville"
+              className="border p-2 rounded"
+            /> // Champ de saisie pour la ville
+            <input
+              type="text"
+              name="media_url"
+              value={formData.media_url}
+              onChange={handleChange}
+              placeholder="URL Image"
+              className="border p-2 rounded"
+            />
+            <Button type="submit" className="bg-primary text-white px-4 py-2">
+              Enregistrer
+            </Button> // Bouton enregistrer les modifications
+          </form>
+        </>
+      )}
+
+      {/* Message de succès */}
+      {success && (
+        <p
+          className="border rounded p-4 text-white text-center transition-opacity duration-500"
+          style={{ backgroundColor: "var(--foreground)", borderColor: "var(--foreground)" }}
+        >
+          La modification a été enregistrée avec succès !
+        </p>
+      )}
+    </div>
+  );
+}
