@@ -74,14 +74,13 @@ export default function EditPost() { // Composant pour éditer une annonce
   if (error) return <p className="text-red-500">Annonce introuvable</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">  // Conteneur principal qui contient le formulaire
+    <div className="max-w-3xl mx-auto p-6"> 
 
-      // Formulaire d'édition ou message de succès est affiché en fonction de l'état success
       {!success && (
         <>
-          <h1 className="text-2xl font-bold mb-4">Modifier l’annonce</h1> // Titre de la page
+          <h1 className="text-2xl font-bold mb-4">Modifier l’annonce</h1> 
           {/* Formulaire d'édition */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4"> // Formulaire avec gestion de la soumission
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4"> 
             <input 
               type="text"
               name="titre"
@@ -90,7 +89,7 @@ export default function EditPost() { // Composant pour éditer une annonce
               placeholder="Titre"
               className="border p-2 rounded"
               required
-            /> // Champ de saisie pour le titre
+            /> 
             <textarea 
               name="description"
               value={formData.description}
@@ -99,7 +98,7 @@ export default function EditPost() { // Composant pour éditer une annonce
               className="border p-2 rounded"
               rows={6}
               required
-            /> // Champ de saisie pour la description
+            /> 
             <input
               type="text"
               name="ville"
@@ -107,7 +106,7 @@ export default function EditPost() { // Composant pour éditer une annonce
               onChange={handleChange}
               placeholder="Ville"
               className="border p-2 rounded"
-            /> // Champ de saisie pour la ville
+            /> 
             <input
               type="text"
               name="media_url"
@@ -118,7 +117,7 @@ export default function EditPost() { // Composant pour éditer une annonce
             />
             <Button type="submit" className="bg-primary text-white px-4 py-2">
               Enregistrer
-            </Button> // Bouton enregistrer les modifications
+            </Button> 
           </form>
         </>
       )}

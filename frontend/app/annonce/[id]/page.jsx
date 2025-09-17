@@ -91,7 +91,7 @@ return (
     <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
         <h1 className="text-3xl font-extrabold text-primary mb-2">
         {annonce.titre}
-        </h1> // Titre de l'annonce
+        </h1> 
         
         {/* Date de création et ville */}
         <p className="text-sm text-gray-500 mb-4">
@@ -102,7 +102,7 @@ return (
         <span className="font-medium text-gray-700">
             {annonce.ville || "Ville non renseignée"}
         </span>
-        </p> // Afficher la date de création et la ville (ou message si non renseignée)
+        </p> 
 
         {/* Bloc Contact (m emplacement, m style mobile & desktop) */}
 {user && (
@@ -111,12 +111,12 @@ return (
     <Avatar avatarUrl={user.avatar} size={14} />
     <p className="font-semibold text-gray-800">
         {user.prenom} {user.nom}
-    </p> // Nom et prénom de l'utilisateur
+    </p> 
 
      {/* Si l'utilisateur connecté est le propriétaire de l'annonce, afficher le bouton Modifier */}
     </div>
 
-    <div className="flex gap-3"> // Conteneur pour les boutons Contacter et Modifier (les 2 m style )
+    <div className="flex gap-3"> 
       {/* Bouton Modifier */}
     {currentUserId && parseInt(currentUserId) === annonce.user_id && (
     <Link href={`/edit/${annonce.post_id}`}>
