@@ -21,3 +21,16 @@ aide ponctuelle,, soutien entre voisins, etc.
 1. Copier le fichier d’exemple :
 ```bash
 cp backend/database/.env.example backend/database/.env
+```
+
+## Run Backend
+```bash
+uv run fastapi dev main.py
+```
+
+## Run Frontend
+
+```bash
+npm install 
+npm run dev
+```
