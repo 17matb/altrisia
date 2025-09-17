@@ -14,3 +14,10 @@ L'objectif est de favoriser l'entraide locale, le partage et la solidarité entr
 ## 🎯 Objectif
 Créer un espace collaboratif où chacun peut proposer ou demander de l’aide **sans échange d’argent** :  
 aide ponctuelle,, soutien entre voisins, etc.
+
+
+## Configuration
+
+1. Copier le fichier d’exemple :
+```bash
+cp backend/database/.env.example backend/database/.env
