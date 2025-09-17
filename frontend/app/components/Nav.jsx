@@ -13,7 +13,6 @@ import { Plus, User, UserPlus } from 'lucide-react';
 import { categories } from '../services/categories';
 import Logo from './ui/Logo';
 
-
 const Nav = () => {
   const [isHamburgerOpened, setIsHamburgerOpened] = useState(false);
   const [isOthersHovered, setIsOthersHovered] = useState(false);
@@ -36,7 +35,7 @@ const Nav = () => {
     setIsHamburgerOpened(!isHamburgerOpened);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if (!navbarRef.current) return;
     const resizeObserver = new ResizeObserver((entries) =>
       setNavbarHeight(entries[0].contentRect.height),
@@ -59,7 +58,7 @@ const Nav = () => {
     <>
       <nav
         ref={navbarRef}
-        className={`${hasScrolled ? 'fixed' : 'absolute'} w-full flex justify-center top-0 left-0 bg-background z-50 ${hasScrolled && 'drop-shadow-xl/5'} rounded-b-3xl lg:rounded-none overflow-hidden`}
+        className={`${hasScrolled ? 'fixed' : 'absolute'} w-full flex justify-center top-0 left-0 bg-background z-50 ${hasScrolled && 'drop-shadow-xl/5'} rounded-b-3xl lg:rounded-none`}
       >
         <div className="max-w-7xl w-full px-4">
           <div className="flex flex-col ">
