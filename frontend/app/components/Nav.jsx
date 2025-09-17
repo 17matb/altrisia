@@ -19,12 +19,11 @@ const Nav = () => {
   const [navbarHeight, setNavbarHeight] = useState();
   const [hasScrolled, setHasScrolled] = useState(false);
 
+  const [userId, setUserId] = useState(null);
   const navbarRef = useRef(null);
 
   const mainCategories = categories.slice(0, 8);
   const otherCategories = categories.slice(8);
-
-  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
