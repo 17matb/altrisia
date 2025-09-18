@@ -18,12 +18,22 @@ const Page = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setUserId(localStorage.getItem('userId'));
+      const storedUserId = localStorage.getItem('userId');
+      console.log('storedUserId:', storedUserId); // debug
+      if (storedUserId) {
+        setUserId(parseInt(storedUserId, 10));
+      }
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!userId) {
+      setMessage('Vous devez être connecté pour poster une annonce');
+      setIsLoading(false);
+      return;
+    }
 
     if (!titre || !description || typeDemande === null || !categoryId) {
       setMessage('Veuillez remplir tous les champs obligatoires');
@@ -41,7 +51,7 @@ const Page = () => {
         media_url: mediaUrl || null,
         description: description,
         ville: ville || null,
-        category_id: parseInt(categoryId),
+        category_id: parseInt(categoryId, 10),
       };
 
       const response = await fetch('http://127.0.0.1:8000/posts/', {
@@ -63,7 +73,22 @@ const Page = () => {
         setTypeDemande(null);
       } else {
         const errorData = await response.json().catch(() => ({}));
-        setMessage(`Erreur: ${errorData.detail || 'Une erreur est survenue'}`);
+
+        let errorMessage = 'Une erreur est survenue';
+
+        if (errorData.detail) {
+          if (typeof errorData.detail === 'string') {
+            errorMessage = errorData.detail;
+          } else if (typeof errorData.detail === 'object') {
+            // J'ai transformé l'objet en chaîne en combinant les messages
+            errorMessage = Object.values(errorData.detail)
+              .flat()
+              .join(' ');
+          }
+        }
+
+        setMessage(`Erreur: ${errorMessage}`);
+        console.log('errorData:', errorData);
       }
     } catch (error) {
       setMessage('Erreur de connexion au serveur');
@@ -186,7 +211,7 @@ const Page = () => {
                 onChange={(e) => setCategoryId(e.target.value)}
                 className="bg-foreground/5 border border-foreground/10 h-9 p-2 flex w-full items-center justify-center rounded-lg"
               >
-                <option disabled selected value="">
+                <option disabled value="">
                   Choisissez une catégorie
                 </option>
                 {categories.map((category) => (
@@ -205,14 +230,6 @@ const Page = () => {
           </form>
         </div>
       </div>
-      {/*<div>
-        <p>type demande : {typeDemande ? 'true' : 'false'}</p>
-        <p>titre : {titre}</p>
-        <p>media url : {mediaUrl}</p>
-        <p>description : {description}</p>
-        <p>ville : {ville}</p>
-        <p>categorie : {categoryId}</p>
-      </div>*/}
     </div>
   );
 };
