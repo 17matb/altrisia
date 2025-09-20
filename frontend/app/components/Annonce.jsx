@@ -9,7 +9,7 @@ const Annonce = ({
   date,
   imageSrc,
   imageAlt,
-  category_id,
+  postId,
 }) => {
   const showFancyDate = (uglyDate) => {
     const dateTime = new Date(uglyDate);
@@ -49,23 +49,23 @@ const Annonce = ({
 
   showFancyDate(date);
   return (
-    <Link href={`/annonce/${category_id}`}>
+    <Link href={`/annonce/${postId}`}>
       <article
         className={`group bg-foreground/0 hover:bg-foreground/5 border-foreground/10 duration-100 border flex flex-col md:flex-row gap-4 p-4 rounded-3xl max-w-3xl cursor-pointer`}
       >
         <div
-          className={`${type_demande === true && 'bg-primary/80'} ${type_demande === false && 'bg-secondary/80'} absolute px-1 py-0.5 text-background m-1 rounded-sm text-sm`}
+          className={`${type_demande === true && 'bg-primary/80'} ${type_demande === false && 'bg-secondary/80'} absolute z-10 px-1 py-0.5 text-background m-1 rounded-sm text-sm`}
         >
           {type_demande ? 'Demande' : 'Proposition'}
         </div>
         <div
-          className={`bg-foreground/50 shrink-0 aspect-[4/3] w-full md:w-64 rounded-lg flex items-center justify-center overflow-hidden`}
+          className={`bg-foreground/50 relative shrink-0 aspect-[4/3] w-full md:w-64 rounded-lg flex items-center justify-center overflow-hidden`}
         >
           {imageSrc && (
             <img
               src={imageSrc}
               alt={imageAlt}
-              className="object-cover w-full h-full"
+              className="absolute object-cover w-full h-full"
             />
           )}
           <Camera size={50} className={`text-foreground/50`} />

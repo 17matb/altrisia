@@ -1,6 +1,6 @@
 from math import ceil
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import desc, select
 from sqlalchemy.orm import Session
 from database.datasession import SessionLocal
 from database import models, schemas
@@ -29,6 +29,7 @@ def read_posts(
         query = query.filter(models.Post.type_demande == type_demande)
     if category_id is not None:
         query = query.filter(models.Post.category_id == category_id)
+    query = query.order_by(desc(models.Post.date_creation))
     total_posts = query.count()
     offset = (page - 1) * limit
     posts = query.offset(offset).limit(limit).all()
@@ -43,6 +44,7 @@ def read_posts(
                 'ville': post.ville,
                 'date_creation': post.date_creation,
                 'type_demande': post.type_demande,
+                'post_id': post.post_id,
             }
             for post in posts
         ],

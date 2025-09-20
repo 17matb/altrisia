@@ -86,9 +86,9 @@ export default function AnnonceDetail() {
   };
 
   return (
-    <div className="flex justify-between bg-background min-h-screen px-6 lg:px-12">
+    <div className="flex justify-between bg-background min-h-screen">
       {/* Contenu principal (centré) */}
-      <div className="flex-shrink-0 w-full max-w-3xl mx-auto p-6">
+      <div className="flex-shrink-0 w-full max-w-3xl imx-auto py-6">
         <h1 className="text-3xl font-extrabold text-primary mb-2">
           {annonce.titre}
         </h1>
@@ -98,7 +98,7 @@ export default function AnnonceDetail() {
             {new Date(annonce.date_creation).toLocaleDateString('fr-FR')}
           </span>
           <span className="mx-2">•</span>
-          <span className="font-medium text-gray-700">
+          <span className="font-medium capitalize text-gray-700">
             {annonce.ville || 'Ville non renseignée'}
           </span>
         </p>

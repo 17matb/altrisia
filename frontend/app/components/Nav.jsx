@@ -131,7 +131,7 @@ const Nav = () => {
                     <Fragment key={`category-${category.category_id}`}>
                       <Link
                         href={`/category/${category.category_id.toString()}`}
-                        className="hover:bg-foreground/5 rounded-md duration-100"
+                        className="hover:bg-foreground/5 first-letter:capitalize rounded-md duration-100"
                       >
                         {category.nom}
                       </Link>
@@ -158,7 +158,7 @@ const Nav = () => {
                               <Link
                                 key={`other-category-${category.category_id}`}
                                 href={`/category/${category.category_id.toString()}`}
-                                className="hover:bg-foreground/5 rounded-md duration-100"
+                                className="hover:bg-foreground/5 first-letter:capitalize rounded-md duration-100"
                               >
                                 {category.nom}
                               </Link>

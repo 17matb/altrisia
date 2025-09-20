@@ -33,7 +33,7 @@ const Page = ({ params }) => {
             description={annonce.description}
             city={annonce.ville}
             date={annonce.date_creation}
-            category_id={annonce.category_id}
+            postId={annonce.post_id}
             key={`annonce-${index}`}
           />
         ))}
